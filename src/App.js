@@ -11,7 +11,8 @@ import data from './data'
 class App extends React.Component{
 
   state = {
-    display: false
+    display: false,
+    toys: []
   }
 
   handleClick = () => {
@@ -23,7 +24,7 @@ class App extends React.Component{
 
   render(){
     return (
-      <>
+      <div>
         <Header/>
         { this.state.display
             ?
@@ -33,10 +34,22 @@ class App extends React.Component{
         }
         <div className="buttonContainer">
           <button onClick={this.handleClick}> Add a Toy </button>
+          {console.log(this.state.toys)}
         </div>
-        <ToyContainer/>
-      </>
+        <ToyContainer data={this.state.toys}/>
+      </div>
     );
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:3000/toys')
+    .then(resp => resp.json())
+    .then(data => {
+      this.setState({
+        display: false,
+        toys: data
+      })
+    })
   }
 
 }
